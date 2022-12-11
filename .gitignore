@@ -1,0 +1,7 @@
+﻿################################################################################
+# Ten plik .gitignore został utworzony automatycznie przez Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs
+/Huffman_coding_decoding/x64/Debug
+/Huffman_coding_decoding/.vs/Huffman_coding_decoding
