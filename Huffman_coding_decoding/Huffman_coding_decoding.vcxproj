@@ -128,6 +128,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="coding.cpp" />
+    <ClCompile Include="SymbolDataModel.cpp" />
+    <ClCompile Include="TreeInput.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="SymbolDataModel.h" />
+    <ClInclude Include="TreeInput.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\.gitignore" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
