@@ -1,3 +1,4 @@
+#include "SymbolDataModel.h"
 #include <iostream>
 #include <vector>
 using namespace std;
@@ -183,11 +184,12 @@ Node* HuffmanCode_makeTree(char code_source[], int frequency_of_signs[], int siz
 int main()
 {
 	//Input string is for example BCAADDDCCACACACKKKKK so:
-
-	char arrayToCode[] = { 'A', 'B', 'C', 'D'};
+	SymbolDataModel Sdm;
+	Sdm.FileRead("boat.pgm");
+	/*char arrayToCode[] = { 'A', 'B', 'C', 'D'};
 	int frequencyOfSigns[] = { 5, 1, 6, 3};
 	int size = sizeof(arrayToCode) / sizeof(arrayToCode[0]);
-	Node* top_node = HuffmanCode_makeTree(arrayToCode, frequencyOfSigns, size);
+	Node* top_node = HuffmanCode_makeTree(arrayToCode, frequencyOfSigns, size);*/
 
 }
 
