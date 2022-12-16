@@ -127,7 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="coding.cpp" />
+    <ClCompile Include="coding2.cpp" />
     <ClCompile Include="SymbolDataModel.cpp" />
     <ClCompile Include="TreeInput.cpp" />
   </ItemGroup>
