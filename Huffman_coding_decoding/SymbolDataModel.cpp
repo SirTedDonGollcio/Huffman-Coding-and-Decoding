@@ -6,21 +6,13 @@
 
 TreeInput SymbolDataModel::FileRead(string fileName)
 {
-	int row = 0, col = 0, numrows = 0, numcols = 0;
+	int row = 0, col = 0, numrows = 0, numcols = 0, maxval = 0;
 	ifstream myfile;
-	char charFile;
-	vector<char> symbols;
-	/*char fileOpen;*/
+	unsigned char charFile;
+	vector<int> symbols;
 
 	myfile.open(fileName);
 	if(!myfile.is_open()) { cout << "Error: file " << fileName << " is not opened\n"; exit(-1); }
-	/*while (myfile)
-	{
-		fileOpen = myfile.get();
-		treeInput.symbols.push_back(fileOpen);
-		std::cout << fileOpen;			
-	}*/
-
 	stringstream ss;
 	string inputLine = "";
 
@@ -38,12 +30,16 @@ TreeInput SymbolDataModel::FileRead(string fileName)
 	// Third line : size
 	ss >> numcols >> numrows;
 	cout << numcols << " columns and " << numrows << " rows" << endl;
+	
+	// reading maximum value
+	ss >> maxval;
+	cout << "Max value " << maxval << endl;
 
 	for (row = 0; row < numrows; ++row)
 		for (col = 0; col < numcols; ++col)
 		{
 			ss >> charFile;
-			symbols.push_back(charFile);
+			symbols.push_back(int(charFile));
 		}
     
 	TreeInput treeInput = TreeInput(symbols);

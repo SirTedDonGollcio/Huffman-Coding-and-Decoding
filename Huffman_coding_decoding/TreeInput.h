@@ -1,13 +1,16 @@
 #pragma once
 using namespace std;
 #include <vector>
+#include <map>
 
 class TreeInput
 {
+private:
+	map<int, int> symbolsFrequencies;
 public:
-	vector<char> symbols;
-	vector<int> frequencyOfSigns;
-	TreeInput(vector<char> symbols);
+	TreeInput(vector<int> symbols);
 	TreeInput() {};
+	vector<int>	extractUniqueSymbols();
+	vector<int> extractFrequencies();
 };
 
