@@ -78,7 +78,7 @@ void decode(Node* temp, vector <int> whichWayIveGone, char symb)
 	}
 }
 
-void HuffmanCode_makeTree(char code_source[], int frequency_of_signs[], int size, char arrayofCode[])
+void HuffmanCode_makeTree(vector<int> code_source, vector<int> frequency_of_signs, int size, vector<int> arrayofCode)
 {
 	//struct MinHNode* root = buildHfTree(item, freq, size);
 
@@ -270,15 +270,19 @@ int main()
 {
 	//Input string is for example BCAADDDCCACACACKKKKK so:
 
-	//SymbolDataModel Sdm;
-	//Sdm.FileRead("boat.pgm");
+	SymbolDataModel Sdm;
+	TreeInput treeInput = Sdm.FileRead("barbara.pgm");
 
-	char arrayToCode[] = { 'A', 'B', 'C', 'D' };
-	int frequencyOfSigns[] = { 5, 1, 6, 3 };
-	int size = sizeof(arrayToCode) / sizeof(arrayToCode[0]);
+	vector<int> array = treeInput.extractUniqueSymbols();
+	vector<int> frequency = treeInput.extractFrequencies();
+	int size1 = sizeof(array);
 
-	char arrayOfData[] = { 'B','C','A','D','D','C','C','A','C','A','C','A','C' };
-	HuffmanCode_makeTree(arrayToCode, frequencyOfSigns, size, arrayOfData);
+	vector<int> arrayToCode = { 'A', 'B', 'C', 'D' };
+	vector<int> frequencyOfSigns = { 5, 1, 6, 3 };
+	int size = sizeof(arrayToCode);
+
+	vector<int> arrayOfData = { 'B','C','A','D','D','C','C','A','C','A','C','A','C'};
+	HuffmanCode_makeTree(array, frequency, size1, array);
 
 	vector <int> emptyRoad;
 	//printTree(test_node, emptyRoad);
