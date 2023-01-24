@@ -46,3 +46,28 @@ TreeInput SymbolDataModel::FileRead(string fileName)
 
 	return treeInput;
 }
+
+BlockModel SymbolDataModel::BlockModel2(vector<int> array, vector<int> frequency)
+{
+	vector<std::string> BlockModel2Array;
+	vector<int> BlockModel2Frequency;
+	int whileStep = 0;
+	while (whileStep < size(array))
+	{		
+		char firstSymbol = array[whileStep];
+		for (int i = 0; i < size(array); i++)
+		{
+			char secondSymbol = array[i];
+			std::string symbolString = std::string(1,firstSymbol) + secondSymbol;
+			int symbolFrequency = frequency[whileStep] * frequency[i];
+			BlockModel2Array.push_back(symbolString);
+			BlockModel2Frequency.push_back(symbolFrequency);
+		}
+		whileStep++;
+	}
+	BlockModel blockModel;
+	blockModel.BlockModel2Array = BlockModel2Array;
+	blockModel.BlockModel2Frequency = BlockModel2Frequency;
+	return blockModel;
+}
+
