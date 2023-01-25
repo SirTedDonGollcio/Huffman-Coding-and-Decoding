@@ -266,6 +266,81 @@ void HuffmanCode_makeTree(vector<int> code_source, vector<int> frequency_of_sign
 
 }
 
+void histogram(vector<int> a, vector<int> f)
+{
+	int maxValue=0;
+	for (int i = 0; i < f.size(); i++)
+	{
+		if (maxValue < f[i])
+		{
+			maxValue = f[i];
+		}
+	}
+
+	int maxSymbolsNumberInHist = 50;
+
+	cout << "____________________________";
+	for (int j = 0; j < maxSymbolsNumberInHist; j++)
+	{
+		cout << "_";
+	}
+	cout  << endl;
+
+	cout << "Value\t| Frequency\t| Histogram";
+	for (int j = 0; j < maxSymbolsNumberInHist - 8; j++)
+	{
+		cout << " ";
+	}
+	cout << "|\n";
+
+	int division;
+
+	for (int i = 0; i < f.size(); i++)
+	{
+		cout << a[i] << "\t| " << f[i] << "\t\t| ";
+
+		division = maxSymbolsNumberInHist * f[i] / maxValue;
+
+		for (int j = 0; j < division; j++)
+		{
+			cout << "X";
+		}
+		for (int j = 0; j < maxSymbolsNumberInHist-division; j++)
+		{
+			cout << "-";
+		}
+
+		cout << " |\n";
+
+	}
+
+	cout << "____________________________";
+	for (int j = 0; j < maxSymbolsNumberInHist; j++)
+	{
+		cout << "_";
+	}
+	cout << endl << endl;
+}
+
+float entropy_ofData(vector<int> f)
+{
+	int sum = 0;
+	for (int i = 0; i < f.size(); i++)
+	{
+		sum += f[i];
+	}
+
+	float prob;
+	float entropy = 0;
+
+	for (int i = 0; i < f.size(); i++)
+	{
+		prob = (float)f[i] / (float)sum;
+		entropy -= prob * log2(prob);
+	}
+	return entropy;
+}
+
 int main()
 {
 	//Input string is for example BCAADDDCCACACACKKKKK so:
@@ -275,6 +350,19 @@ int main()
 
 	vector<int> array = treeInput.extractUniqueSymbols();
 	vector<int> frequency = treeInput.extractFrequencies();
+
+	for (int i = 0; i<frequency.size(); i++)
+	{
+		if (frequency[i] > 20000)
+		{
+			frequency[i] = 1;
+		}
+	}
+
+	histogram(array, frequency);
+
+	cout << "Entropy of the input data: " << entropy_ofData(frequency) << endl;
+
 	int size1 = sizeof(array);
 
 	vector<int> arrayToCode = { 'A', 'B', 'C', 'D' };
