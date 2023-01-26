@@ -5,12 +5,8 @@ using namespace std;
 TreeInput::TreeInput(vector<int> symbols)
 {
 	for (int i = 0; i < symbols.size(); i++) {
-		if (this->symbolsFrequencies.find(symbols[i]) == this->symbolsFrequencies.end()) {
-			this->symbolsFrequencies[symbols[i]] = 1;
-		}
-		else {
-			this->symbolsFrequencies[symbols[i]]++;
-		}
+		symbolsFrequencies[symbols[i]]++;
+
 	}
 }
 

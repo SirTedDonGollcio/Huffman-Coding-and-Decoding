@@ -1,3 +1,4 @@
+#include "BitLengthCalculator.h"
 #include <vector>
 using namespace std;
 
@@ -10,7 +11,7 @@ int bit_length(int n) {
     return count;
 }
 
-int bit_length_total(vector<int> numbers) {
+int BitLengthCalculator::bit_length_total(vector<int> numbers) {
     int total_bits = 0;
     for (auto num : numbers) {
         total_bits += bit_length(num);
