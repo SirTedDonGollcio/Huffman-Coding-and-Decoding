@@ -201,7 +201,7 @@ void decode_2s(Node_2* temp, vector <int> whichWayIveGone, std::string symb)
 	}
 	if (temp->left_node == NULL && temp->right_node == NULL && temp->symbol.size() == 2)
 	{
-		if (temp->symbol == symb)
+		if (temp->symbol[0] == symb[0])
 		{
 			//cout << "Im decoding: " << (int)temp->symbol << " to: ";
 			std::ofstream myfile;
@@ -634,7 +634,7 @@ void HuffmanCode_makeTreeModel2(vector<std::string> code_source, vector<int> fre
 	vector <int> emptyRoad2;
 	for (int i = 0; i < ti.input.size(); i++)
 	{
-		decode_2s(address_ofTopNode, emptyRoad2, ti.input[i]);
+		decode_2s(address_ofTopNode, emptyRoad2, std::string(1,ti.input[i]));
 	}
 }
 
@@ -816,7 +816,7 @@ int main()
 		cout << "Entorpia danych wejsicowych modelu blokowego rzedu 2 wynosi: " << entropy_ofData(BlockModel2Frequency) << endl;
 
 		HuffmanCode_makeTree(array, frequency, sizeof(array), array, treeInput, name);
-
+		HuffmanCode_makeTreeModel2(blockModel2Array, BlockModel2Frequency, size2, blockModel2Array, treeInput);
 		//HuffmanCode_makeTreeModel2(blockModel2Array, BlockModel2Frequency, size2, blockModel2Array);
 	}
 }
