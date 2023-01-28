@@ -12,7 +12,9 @@ TreeInput SymbolDataModel::FileRead(string fileName)
 	ifstream file(fileName, ios::binary);
 	int charFile;
 
-	if (!file.is_open()) { cout << "Error: file " << fileName << " is not opened\n"; exit(-1); }
+
+	if(!file.is_open()) { cout << "Error: file " << fileName << " is not opened\n"; exit(-1); }
+  
 	stringstream ss;
 	string inputLine = "";
 
@@ -38,6 +40,7 @@ TreeInput SymbolDataModel::FileRead(string fileName)
 	file.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
 	vector<char> buffer(numpixels);
+
 	file.read(buffer.data(), numpixels);
 	for (int i = 0; i < numpixels; i++) {
 		symbols.push_back(buffer[i] + 128); // shift 128 to the right when saving since we are reading signed chars (-128 to 127)
@@ -77,4 +80,3 @@ BlockModel SymbolDataModel::BlockModel2(vector<int> array, vector<int> frequency
 	blockModel.BlockModel2Frequency = BlockModel2Frequency;
 	return blockModel;
 }
-
