@@ -99,6 +99,36 @@ void decode(Node* temp, vector <int> whichWayIveGone, char symb)
 	}
 }
 
+string decode_string(Node* temp, string whichWayIveGone, char symb)
+{
+	if (temp->left_node != NULL)
+	{
+		whichWayIveGone += "0";
+		return decode_string(temp->left_node, whichWayIveGone, symb);
+		whichWayIveGone.pop_back();
+	}
+	if (temp->right_node != NULL)
+	{
+		whichWayIveGone += "1";
+		return decode_string(temp->right_node, whichWayIveGone, symb);
+	}
+	if (temp->left_node == NULL && temp->right_node == NULL)
+	{
+		if (temp->symbol == symb)
+		{
+			cout << "Im decoding: " << (int)temp->symbol << " to: ";
+			cout << whichWayIveGone << endl;
+			return whichWayIveGone;
+		}
+		else
+		{
+			return "r";
+		}
+
+	}
+}
+
+
 void printTree_2(Node_2* temp, vector <int> whichWayIveGone)
 {
 	if (temp->left_node != NULL)
@@ -156,7 +186,7 @@ void decode_2(Node_2* temp, vector <int> whichWayIveGone, std::string symb)
 	}
 }
 
-void HuffmanCode_makeTree(vector<int> code_source, vector<int> frequency_of_signs, int size, vector<int> arrayofCode)
+void HuffmanCode_makeTree(vector<int> code_source, vector<int> frequency_of_signs, int size, vector<int> arrayofCode, vector<int> ti)
 {
 	//struct MinHNode* root = buildHfTree(item, freq, size);
 
@@ -337,10 +367,22 @@ void HuffmanCode_makeTree(vector<int> code_source, vector<int> frequency_of_sign
 
 	cout << "\n\n\n";
 
-	for (int i = 0; i < sizeof(arrayofCode); i++)
+	/*for (int i = 0; i < sizeof(arrayofCode); i++)
 	{
 		decode(address_ofTopNode, emptyRoad, arrayofCode[i]);
+		//cout << arrayofCode[i] << " ";
+	}*/
+
+	string emptyRoad_char = "";
+	std::ofstream myfile;
+	myfile.open("coded.txt");
+	for (int i = 0; i < sizeof(ti); i++)
+	{
+		cout << ti[i] << " ";
+		myfile << decode_string(address_ofTopNode, emptyRoad_char, ti[i]) << " ";
+		//myfile << ti.input[i] << " ";
 	}
+	myfile.close();
 
 }
 void HuffmanCode_makeTreeModel2(vector<std::string> code_source, vector<int> frequency_of_signs, int size2, vector<std::string> arrayofCode)
@@ -660,7 +702,7 @@ void histogram_2(vector<std::string> a, vector<int> f)
 
 float entropy_ofData(vector<int> f)
 {
-	long long float sum = 0;
+	long float sum = 0;
 	for (int i = 0; i < f.size(); i++)
 	{
 		sum += f[i];
@@ -686,7 +728,7 @@ int main()
 	//Input string is for example BCAADDDCCACACACKKKKK so:
 
 	SymbolDataModel Sdm;
-	TreeInput treeInput = Sdm.FileRead("normal_10b.pgm");
+	TreeInput treeInput = Sdm.FileRead("barbara.pgm");
 
 	vector<int> array = treeInput.extractUniqueSymbols();
 	vector<int> frequency = treeInput.extractFrequencies();
@@ -729,10 +771,18 @@ int main()
 	int size = sizeof(arrayToCode);*/
 
 	/*vector<int> arrayOfData = { 'B','C','A','D','D','C','C','A','C','A','C','A','C'};*/
-	HuffmanCode_makeTree(array, frequency, size1, array);
+
+	for (int i = 0; i < sizeof(treeInput.input); i++)
+	{
+		cout << treeInput.input[i] << " ";
+		//myfile << ti.input[i] << " ";
+	}
+
+	HuffmanCode_makeTree(array, frequency, size1, array, treeInput.input);
 
 	/*HuffmanCode_makeTree(array, frequency, size1, array);*/
-	HuffmanCode_makeTreeModel2(blockModel2Array, BlockModel2Frequency, size2, blockModel2Array);
+	
+	//HuffmanCode_makeTreeModel2(blockModel2Array, BlockModel2Frequency, size2, blockModel2Array);
 
 	vector <int> emptyRoad;
 	//printTree(test_node, emptyRoad);
