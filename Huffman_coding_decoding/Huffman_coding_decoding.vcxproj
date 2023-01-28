@@ -128,10 +128,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="coding2.cpp" />
+    <ClCompile Include="DataGenerator.cpp" />
     <ClCompile Include="SymbolDataModel.cpp" />
     <ClCompile Include="TreeInput.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DataGenerator.h" />
     <ClInclude Include="SymbolDataModel.h" />
     <ClInclude Include="TreeInput.h" />
   </ItemGroup>
