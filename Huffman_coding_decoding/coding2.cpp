@@ -1,7 +1,9 @@
 #include "SymbolDataModel.h"
+#include "DataGenerator.h"
 #include <iostream>
 #include <vector>
 #include <fstream>
+#include <chrono>
 	using namespace std;
 
 //#define MAX_TREE_HT 50
@@ -99,42 +101,30 @@ void decode(Node* temp, vector <int> whichWayIveGone, char symb)
 	}
 }
 
-void decode_s(Node* temp, vector <int> whichWayIveGone, char symb)
+void decode_s(Node* temp, vector <int> whichWayIveGone, char symb, vector<string> &path)
 {
 	if (temp->left_node != NULL)
 	{
 		whichWayIveGone.push_back(48);
-		decode_s(temp->left_node, whichWayIveGone, symb);
+		decode_s(temp->left_node, whichWayIveGone, symb, path);
 		whichWayIveGone.pop_back();
 	}
 	if (temp->right_node != NULL)
 	{
 		whichWayIveGone.push_back(49);
-		decode_s(temp->right_node, whichWayIveGone, symb);
+		decode_s(temp->right_node, whichWayIveGone, symb, path);
 	}
 	if (temp->left_node == NULL && temp->right_node == NULL)
 	{
 		if (temp->symbol == symb)
 		{
-			//cout << "Im decoding: " << (int)temp->symbol << " to: ";
-			std::ofstream myfile;
-			myfile.open("coded_withColons.txt", ios::app);
-			std::ofstream myfile2;
-			myfile2.open("coded.txt", ios::app);
+			string tmp;
 			for (int i = 0; i < whichWayIveGone.size(); i++)
 			{
-				//cout << (char)whichWayIveGone[i];
-				myfile << (char)whichWayIveGone[i];
-				myfile2 << (char)whichWayIveGone[i];
+				tmp.push_back((char)whichWayIveGone[i]);
 			}
-			myfile << ";";
-			myfile.close();
-			myfile2.close();
-
-			//cout << s;
-			//cout << endl;
+			path.push_back(tmp);
 		}
-
 	}
 }
 
@@ -235,7 +225,26 @@ void decode_2s(Node_2* temp, vector <int> whichWayIveGone, std::string symb)
 	}
 }
 
-void HuffmanCode_makeTree(vector<int> code_source, vector<int> frequency_of_signs, int size, vector<int> arrayofCode, TreeInput ti)
+float average_bit_length_output_code(vector<int> f, vector<string> output)
+{
+	long float sum = 0;
+	for (int i = 0; i < f.size(); i++)
+	{
+		sum += f[i];
+	}
+
+	float prob;
+	float avgBitLengthSum = 0;
+
+	for (int i = 0; i < f.size(); i++)
+	{
+		prob = (float)f[i] / sum;
+		avgBitLengthSum += prob * output[i].size();
+	}
+	return avgBitLengthSum;
+}
+
+void HuffmanCode_makeTree(vector<int> code_source, vector<int> frequency_of_signs, int size, vector<int> arrayofCode, TreeInput ti, string name)
 {
 	//struct MinHNode* root = buildHfTree(item, freq, size);
 
@@ -399,43 +408,33 @@ void HuffmanCode_makeTree(vector<int> code_source, vector<int> frequency_of_sign
 		//cout << endl;
 	}
 
-	//cout << frequency_of_signs[0];
-	//int arr[MAX_TREE_HT], top = 0;
-
-	//printHCodes(root, arr, top);
-
-	//Node* coutNode = address_ofTopNode;
-	for (int i = 0; i < size; i++)
-	{
-		cout << code_source[i];
-	}
-	cout << endl;
-
-	vector <int> emptyRoad;
-	printTree(address_ofTopNode, emptyRoad);
-
-	cout << "\n\n\n";
-	
-	for (int i = 0; i < sizeof(arrayofCode); i++)
-	{
-		decode(address_ofTopNode, emptyRoad, arrayofCode[i]);
-	}
-
-	std::ofstream myfile_temp;
-	myfile_temp.open("coded_withColons.txt");
-	myfile_temp.close();
-	std::ofstream myfile_temp2;
-	myfile_temp2.open("coded.txt");
-	myfile_temp2.close();
-
 	vector <int> emptyRoad2;
+	vector <string> path;
+
+	auto start = std::chrono::high_resolution_clock::now();
 	for (int i = 0; i < ti.input.size(); i++)
 	{
-		decode_s(address_ofTopNode, emptyRoad2, ti.input[i]);
+		decode_s(address_ofTopNode, emptyRoad2, ti.input[i], path);
+	}
+	auto stop = std::chrono::high_resolution_clock::now();
+	auto duration = std::chrono::duration_cast<std::chrono::seconds>(stop - start);
+	std::cout << "Czas wykonania: " << duration.count() << " sekund" << std::endl;
+
+	cout << "Srednia dlugosc bitowa kodu wyjsciowego: " << average_bit_length_output_code(frequency_of_signs, path) << endl;
+
+	vector <char> outputData;
+	for (int i = 0; i < path.size(); i++) {
+		for (int j = 0; j < path[i].size(); j++) {
+			outputData.push_back(path[i][j]);
+		}
 	}
 	 
-
+	ofstream binaryFile;
+	binaryFile.open(name+".bin", ios::out | ios::binary);
+	binaryFile.write(outputData.data(), outputData.size());
+	binaryFile.close();
 }
+
 void HuffmanCode_makeTreeModel2(vector<std::string> code_source, vector<int> frequency_of_signs, int size2, vector<std::string> arrayofCode, TreeInput ti)
 {
 	//struct MinHNode* root = buildHfTree(item, freq, size);
@@ -789,61 +788,35 @@ float entropy_ofData(vector<int> f)
 int main()
 {
 	//Input string is for example BCAADDDCCACACACKKKKK so:
+	vector <string> names = { "barbara", "lena", "boat", "chronometer", "mandril", "peppers", "normalny", "laplacea", "jednorodny" };
+	for (int n = 0; n < names.size(); n++) {
+		string name = names[n];
+		cout << endl << "Procesowanie | " << name << endl;
+		SymbolDataModel Sdm;
+		TreeInput treeInput;
 
-	SymbolDataModel Sdm;
-	TreeInput treeInput = Sdm.FileRead("barbara.pgm");
+		if (name == "normalny") treeInput = DataGenerator::normalGenerate(512 * 512);
+		else if (name == "laplacea") treeInput = DataGenerator::laplaceGenerate(512 * 512);
+		else if (name == "jednorodny") treeInput = DataGenerator::uniformGenerate(512 * 512);
+		else treeInput = Sdm.FileRead(name + ".pgm");
 
-	vector<int> array = treeInput.extractUniqueSymbols();
-	vector<int> frequency = treeInput.extractFrequencies();
+		vector<int> array = treeInput.extractUniqueSymbols();
+		vector<int> frequency = treeInput.extractFrequencies();
 
-	cout << "Entorpia danych wejsicowych wynosi: " << entropy_ofData(frequency) << endl;
+		cout << "Entorpia danych wejsicowych wynosi: " << entropy_ofData(frequency) << endl;
 
-	histogram_toCsv(array, frequency);
+		histogram_toCsv(array, frequency);
 
-	BlockModel bm;
-	bm = Sdm.BlockModel2(array, frequency);
-	vector<std::string> blockModel2Array = bm.BlockModel2Array;
-	vector<int> BlockModel2Frequency = bm.BlockModel2Frequency;
-	int size2 = sizeof(blockModel2Array);
+		BlockModel bm;
+		bm = Sdm.BlockModel2(array, frequency);
+		vector<std::string> blockModel2Array = bm.BlockModel2Array;
+		vector<int> BlockModel2Frequency = bm.BlockModel2Frequency;
+		int size2 = sizeof(blockModel2Array);
 
+		cout << "Entorpia danych wejsicowych modelu blokowego rzedu 2 wynosi: " << entropy_ofData(BlockModel2Frequency) << endl;
 
-	/*for (int i = 0; i<frequency.size(); i++)
-	{
-		if (frequency[i] > 20000)
-		{
-			frequency[i] = 1;
-		}
-	}*/
+		HuffmanCode_makeTree(array, frequency, sizeof(array), array, treeInput, name);
 
-	/*for (int i = 0; i < BlockModel2Frequency.size(); i++)
-	{
-		if (BlockModel2Frequency[i] > 20000)
-		{
-			BlockModel2Frequency[i] = 1;
-		}
+		//HuffmanCode_makeTreeModel2(blockModel2Array, BlockModel2Frequency, size2, blockModel2Array);
 	}
-
-	histogram_2(blockModel2Array, BlockModel2Frequency);
-
-	cout << "Entropy of the input data: " << entropy_ofData(BlockModel2Frequency) << endl;*/
-
-	int size1 = sizeof(array);
-
-	/*vector<int> arrayToCode = { 'A', 'B', 'C', 'D' };
-	vector<int> frequencyOfSigns = { 5, 1, 6, 3 };
-	int size = sizeof(arrayToCode);*/
-
-	/*vector<int> arrayOfData = { 'B','C','A','D','D','C','C','A','C','A','C','A','C'};*/
-
-
-
-	HuffmanCode_makeTree(array, frequency, size1, array, treeInput);
-
-	/*HuffmanCode_makeTree(array, frequency, size1, array);*/
-	
-	//HuffmanCode_makeTreeModel2(blockModel2Array, BlockModel2Frequency, size2, blockModel2Array);
-
-	vector <int> emptyRoad;
-	//printTree(test_node, emptyRoad);
-
 }
