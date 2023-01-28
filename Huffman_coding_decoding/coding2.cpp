@@ -61,7 +61,7 @@ void printTree(Node * temp, vector <int> whichWayIveGone)
 	}
 	if (temp->left_node == NULL && temp->right_node == NULL)
 	{
-		cout << "Im terminal leaf with symbol: " << temp->symbol << " and frequancy: " << temp->frequency << " and i've been going trhough the: ";
+		cout << "Im terminal leaf with symbol: " << (int)temp->symbol << " and frequancy: " << temp->frequency << " and i've been going through the: ";
 		for (int i = 0; i < whichWayIveGone.size(); i++)
 		{
 			cout << whichWayIveGone[i];
@@ -87,7 +87,7 @@ void decode(Node* temp, vector <int> whichWayIveGone, char symb)
 	{
 		if (temp->symbol == symb)
 		{
-			cout << "Im decoding: " << temp->symbol << " to: ";
+			cout << "Im decoding: " << (int)temp->symbol << " to: ";
 			for (int i = 0; i < whichWayIveGone.size(); i++)
 			{
 				cout << whichWayIveGone[i];
@@ -111,9 +111,12 @@ void printTree_2(Node_2* temp, vector <int> whichWayIveGone)
 		whichWayIveGone.push_back(1);
 		printTree_2(temp->right_node, whichWayIveGone);
 	}
-	if (temp->left_node == NULL && temp->right_node == NULL)
+	if (temp->left_node == NULL && temp->right_node == NULL && temp->symbol.size() == 2)
 	{
-		cout << "Im terminal leaf with symbol: " << temp->symbol << " and frequancy: " << temp->frequency << " and i've been going trhough the: ";
+		int firstchar = temp->symbol[0];
+	    int secondchar = temp->symbol[1];
+		cout << "Im terminal leaf with symbol: " << firstchar << secondchar << " and frequancy: " << temp->frequency << " and i've been going through the: ";
+		
 		for (int i = 0; i < whichWayIveGone.size(); i++)
 		{
 			cout << whichWayIveGone[i];
@@ -135,11 +138,13 @@ void decode_2(Node_2* temp, vector <int> whichWayIveGone, std::string symb)
 		whichWayIveGone.push_back(1);
 		decode_2(temp->right_node, whichWayIveGone, symb);
 	}
-	if (temp->left_node == NULL && temp->right_node == NULL)
+	if (temp->left_node == NULL && temp->right_node == NULL && temp->symbol.size() == 2)
 	{
 		if (temp->symbol == symb)
 		{
-			cout << "Im decoding: " << temp->symbol << " to: ";
+			int firstchar = temp->symbol[0];
+			int secondchar = temp->symbol[1];
+			cout << "Im decoding: " << firstchar << secondchar << " to: ";
 			for (int i = 0; i < whichWayIveGone.size(); i++)
 			{
 				cout << whichWayIveGone[i];
@@ -416,7 +421,7 @@ void HuffmanCode_makeTreeModel2(vector<std::string> code_source, vector<int> fre
 	else
 	{
 		vector <int> freqs;
-		for (int i = 0; i < size2 - 2; i++)
+		for (int i = 0; i < size2; i++)
 		{
 			freqs.push_back(frequency_of_signs[i]);
 		}
@@ -509,7 +514,10 @@ void HuffmanCode_makeTreeModel2(vector<std::string> code_source, vector<int> fre
 	//Node* coutNode = address_ofTopNode;
 	for (int i = 0; i < size2; i++)
 	{
-		cout << code_source[i];
+		int firstchar = code_source[i][0];
+		int secondchar = code_source[i][1];
+		cout << firstchar;
+		cout << secondchar;
 	}
 	cout << endl;
 
@@ -581,6 +589,62 @@ void histogram(vector<int> a, vector<int> f)
 	cout << endl << endl;
 }
 
+void histogram_2(vector<std::string> a, vector<int> f)
+{
+	int maxValue = 0;
+	for (int i = 0; i < f.size(); i++)
+	{
+		if (maxValue < f[i])
+		{
+			maxValue = f[i];
+		}
+	}
+
+	int maxSymbolsNumberInHist = 50;
+
+	cout << "____________________________";
+	for (int j = 0; j < maxSymbolsNumberInHist; j++)
+	{
+		cout << "_";
+	}
+	cout << endl;
+
+	cout << "Value\t| Frequency\t| Histogram";
+	for (int j = 0; j < maxSymbolsNumberInHist - 8; j++)
+	{
+		cout << " ";
+	}
+	cout << "|\n";
+
+	int division;
+
+	for (int i = 0; i < f.size(); i++)
+	{
+		cout << a[i] << "\t| " << f[i] << "\t\t| ";
+
+		division = maxSymbolsNumberInHist * f[i] / maxValue;
+
+		for (int j = 0; j < division; j++)
+		{
+			cout << "X";
+		}
+		for (int j = 0; j < maxSymbolsNumberInHist - division; j++)
+		{
+			cout << "-";
+		}
+
+		cout << " |\n";
+
+	}
+
+	cout << "____________________________";
+	for (int j = 0; j < maxSymbolsNumberInHist; j++)
+	{
+		cout << "_";
+	}
+	cout << endl << endl;
+}
+
 float entropy_ofData(vector<int> f)
 {
 	int sum = 0;
@@ -610,34 +674,43 @@ int main()
 	vector<int> array = treeInput.extractUniqueSymbols();
 	vector<int> frequency = treeInput.extractFrequencies();
 
-	for (int i = 0; i<frequency.size(); i++)
-	{
-		if (frequency[i] > 20000)
-		{
-			frequency[i] = 1;
-		}
-	}
-
-	histogram(array, frequency);
-
-	cout << "Entropy of the input data: " << entropy_ofData(frequency) << endl;
-
-	int size1 = sizeof(array);
-
-	/*vector<int> arrayToCode = { 'A', 'B', 'C', 'D' };
-	vector<int> frequencyOfSigns = { 5, 1, 6, 3 };
-	int size = sizeof(arrayToCode);
-
-	vector<int> arrayOfData = { 'B','C','A','D','D','C','C','A','C','A','C','A','C'};
-	HuffmanCode_makeTree(array, frequency, size1, array);*/
-
 	BlockModel bm;
 	bm = Sdm.BlockModel2(array, frequency);
 	vector<std::string> blockModel2Array = bm.BlockModel2Array;
 	vector<int> BlockModel2Frequency = bm.BlockModel2Frequency;
 	int size2 = sizeof(blockModel2Array);
+
+	/*for (int i = 0; i<frequency.size(); i++)
+	{
+		if (frequency[i] > 20000)
+		{
+			frequency[i] = 1;
+		}
+	}*/
+
+	/*for (int i = 0; i < BlockModel2Frequency.size(); i++)
+	{
+		if (BlockModel2Frequency[i] > 20000)
+		{
+			BlockModel2Frequency[i] = 1;
+		}
+	}
+
+	histogram_2(blockModel2Array, BlockModel2Frequency);
+
+	cout << "Entropy of the input data: " << entropy_ofData(BlockModel2Frequency) << endl;*/
+
+	int size1 = sizeof(array);
+
+	/*vector<int> arrayToCode = { 'A', 'B', 'C', 'D' };
+	vector<int> frequencyOfSigns = { 5, 1, 6, 3 };
+	int size = sizeof(arrayToCode);*/
+
+	/*vector<int> arrayOfData = { 'B','C','A','D','D','C','C','A','C','A','C','A','C'};*/
+	HuffmanCode_makeTree(array, frequency, size1, array);
+
 	/*HuffmanCode_makeTree(array, frequency, size1, array);*/
-	HuffmanCode_makeTreeModel2(blockModel2Array, BlockModel2Frequency, size2, blockModel2Array);
+	/*HuffmanCode_makeTreeModel2(blockModel2Array, BlockModel2Frequency, size2, blockModel2Array);*/
 
 	vector <int> emptyRoad;
 	//printTree(test_node, emptyRoad);
