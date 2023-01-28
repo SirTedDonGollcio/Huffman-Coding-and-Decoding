@@ -1,6 +1,7 @@
 #include "SymbolDataModel.h"
 #include <iostream>
 #include <vector>
+#include <fstream>
 	using namespace std;
 
 //#define MAX_TREE_HT 50
@@ -533,6 +534,18 @@ void HuffmanCode_makeTreeModel2(vector<std::string> code_source, vector<int> fre
 
 }
 
+void histogram_toCsv(vector<int> a, vector<int> f)
+{
+	std::ofstream myfile;
+	myfile.open("histogram.csv");
+	myfile << "Symbol;Frequency\n";
+	for (int i = 0; i < f.size(); i++)
+	{
+		myfile << a[i] << ";" << f[i] << "\n";
+	}
+	myfile.close();
+}
+
 void histogram(vector<int> a, vector<int> f)
 {
 	int maxValue=0;
@@ -669,16 +682,20 @@ int main()
 	//Input string is for example BCAADDDCCACACACKKKKK so:
 
 	SymbolDataModel Sdm;
-	TreeInput treeInput = Sdm.FileRead("barbara.pgm");
+	TreeInput treeInput = Sdm.FileRead("laplace_10.pgm");
 
 	vector<int> array = treeInput.extractUniqueSymbols();
 	vector<int> frequency = treeInput.extractFrequencies();
+
+
+	histogram_toCsv(array, frequency);
 
 	BlockModel bm;
 	bm = Sdm.BlockModel2(array, frequency);
 	vector<std::string> blockModel2Array = bm.BlockModel2Array;
 	vector<int> BlockModel2Frequency = bm.BlockModel2Frequency;
 	int size2 = sizeof(blockModel2Array);
+
 
 	/*for (int i = 0; i<frequency.size(); i++)
 	{
@@ -710,7 +727,7 @@ int main()
 	HuffmanCode_makeTree(array, frequency, size1, array);
 
 	/*HuffmanCode_makeTree(array, frequency, size1, array);*/
-	/*HuffmanCode_makeTreeModel2(blockModel2Array, BlockModel2Frequency, size2, blockModel2Array);*/
+	HuffmanCode_makeTreeModel2(blockModel2Array, BlockModel2Frequency, size2, blockModel2Array);
 
 	vector <int> emptyRoad;
 	//printTree(test_node, emptyRoad);
