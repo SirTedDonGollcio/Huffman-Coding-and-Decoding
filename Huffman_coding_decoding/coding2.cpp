@@ -660,7 +660,7 @@ void histogram_2(vector<std::string> a, vector<int> f)
 
 float entropy_ofData(vector<int> f)
 {
-	int sum = 0;
+	long long float sum = 0;
 	for (int i = 0; i < f.size(); i++)
 	{
 		sum += f[i];
@@ -671,7 +671,11 @@ float entropy_ofData(vector<int> f)
 
 	for (int i = 0; i < f.size(); i++)
 	{
-		prob = (float)f[i] / (float)sum;
+		prob = (float)f[i] / sum;
+		if (prob == 0)
+		{
+			prob = 0.00000000001;
+		}
 		entropy -= prob * log2(prob);
 	}
 	return entropy;
@@ -682,11 +686,12 @@ int main()
 	//Input string is for example BCAADDDCCACACACKKKKK so:
 
 	SymbolDataModel Sdm;
-	TreeInput treeInput = Sdm.FileRead("laplace_10.pgm");
+	TreeInput treeInput = Sdm.FileRead("normal_10b.pgm");
 
 	vector<int> array = treeInput.extractUniqueSymbols();
 	vector<int> frequency = treeInput.extractFrequencies();
 
+	cout << "Entorpia danych wejsicowych wynosi: " << entropy_ofData(frequency) << endl;
 
 	histogram_toCsv(array, frequency);
 
