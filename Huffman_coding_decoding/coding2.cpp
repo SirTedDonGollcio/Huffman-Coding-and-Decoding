@@ -215,8 +215,10 @@ void decode_2s(Node_2* temp, vector <int> whichWayIveGone, std::string symb, vec
 
 float average_bit_length_output_code(vector<int> f, vector<string> output)
 {
+	int num = f.size() > output.size() ? output.size() : f.size();
+
 	long float sum = 0;
-	for (int i = 0; i < f.size(); i++)
+	for (int i = 0; i < num; i++)
 	{
 		sum += f[i];
 	}
@@ -224,7 +226,7 @@ float average_bit_length_output_code(vector<int> f, vector<string> output)
 	float prob;
 	float avgBitLengthSum = 0;
 
-	for (int i = 0; i < f.size(); i++)
+	for (int i = 0; i < num; i++)
 	{
 		prob = (float)f[i] / sum;
 		avgBitLengthSum += prob * output[i].size();
