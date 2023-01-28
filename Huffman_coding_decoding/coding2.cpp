@@ -99,30 +99,40 @@ void decode(Node* temp, vector <int> whichWayIveGone, char symb)
 	}
 }
 
-string decode_string(Node* temp, string whichWayIveGone, char symb)
+void decode_s(Node* temp, vector <int> whichWayIveGone, char symb)
 {
 	if (temp->left_node != NULL)
 	{
-		whichWayIveGone += "0";
-		return decode_string(temp->left_node, whichWayIveGone, symb);
+		whichWayIveGone.push_back(48);
+		decode_s(temp->left_node, whichWayIveGone, symb);
 		whichWayIveGone.pop_back();
 	}
 	if (temp->right_node != NULL)
 	{
-		whichWayIveGone += "1";
-		return decode_string(temp->right_node, whichWayIveGone, symb);
+		whichWayIveGone.push_back(49);
+		decode_s(temp->right_node, whichWayIveGone, symb);
 	}
 	if (temp->left_node == NULL && temp->right_node == NULL)
 	{
 		if (temp->symbol == symb)
 		{
-			cout << "Im decoding: " << (int)temp->symbol << " to: ";
-			cout << whichWayIveGone << endl;
-			return whichWayIveGone;
-		}
-		else
-		{
-			return "r";
+			//cout << "Im decoding: " << (int)temp->symbol << " to: ";
+			std::ofstream myfile;
+			myfile.open("coded_withColons.txt", ios::app);
+			std::ofstream myfile2;
+			myfile2.open("coded.txt", ios::app);
+			for (int i = 0; i < whichWayIveGone.size(); i++)
+			{
+				//cout << (char)whichWayIveGone[i];
+				myfile << (char)whichWayIveGone[i];
+				myfile2 << (char)whichWayIveGone[i];
+			}
+			myfile << ";";
+			myfile.close();
+			myfile2.close();
+
+			//cout << s;
+			//cout << endl;
 		}
 
 	}
@@ -186,7 +196,46 @@ void decode_2(Node_2* temp, vector <int> whichWayIveGone, std::string symb)
 	}
 }
 
-void HuffmanCode_makeTree(vector<int> code_source, vector<int> frequency_of_signs, int size, vector<int> arrayofCode, vector<int> ti)
+void decode_2s(Node_2* temp, vector <int> whichWayIveGone, std::string symb)
+{
+	if (temp->left_node != NULL)
+	{
+		whichWayIveGone.push_back(48);
+		decode_2s(temp->left_node, whichWayIveGone, symb);
+		whichWayIveGone.pop_back();
+	}
+	if (temp->right_node != NULL)
+	{
+		whichWayIveGone.push_back(49);
+		decode_2s(temp->right_node, whichWayIveGone, symb);
+	}
+	if (temp->left_node == NULL && temp->right_node == NULL && temp->symbol.size() == 2)
+	{
+		if (temp->symbol == symb)
+		{
+			//cout << "Im decoding: " << (int)temp->symbol << " to: ";
+			std::ofstream myfile;
+			myfile.open("coded_withColons.txt", ios::app);
+			std::ofstream myfile2;
+			myfile2.open("coded.txt", ios::app);
+			for (int i = 0; i < whichWayIveGone.size(); i++)
+			{
+				//cout << (char)whichWayIveGone[i];
+				myfile << (char)whichWayIveGone[i];
+				myfile2 << (char)whichWayIveGone[i];
+			}
+			myfile << ";";
+			myfile.close();
+			myfile2.close();
+
+			//cout << s;
+			//cout << endl;
+		}
+
+	}
+}
+
+void HuffmanCode_makeTree(vector<int> code_source, vector<int> frequency_of_signs, int size, vector<int> arrayofCode, TreeInput ti)
 {
 	//struct MinHNode* root = buildHfTree(item, freq, size);
 
@@ -366,26 +415,28 @@ void HuffmanCode_makeTree(vector<int> code_source, vector<int> frequency_of_sign
 	printTree(address_ofTopNode, emptyRoad);
 
 	cout << "\n\n\n";
-
-	/*for (int i = 0; i < sizeof(arrayofCode); i++)
+	
+	for (int i = 0; i < sizeof(arrayofCode); i++)
 	{
 		decode(address_ofTopNode, emptyRoad, arrayofCode[i]);
-		//cout << arrayofCode[i] << " ";
-	}*/
-
-	string emptyRoad_char = "";
-	std::ofstream myfile;
-	myfile.open("coded.txt");
-	for (int i = 0; i < sizeof(ti); i++)
-	{
-		cout << ti[i] << " ";
-		myfile << decode_string(address_ofTopNode, emptyRoad_char, ti[i]) << " ";
-		//myfile << ti.input[i] << " ";
 	}
-	myfile.close();
+
+	std::ofstream myfile_temp;
+	myfile_temp.open("coded_withColons.txt");
+	myfile_temp.close();
+	std::ofstream myfile_temp2;
+	myfile_temp2.open("coded.txt");
+	myfile_temp2.close();
+
+	vector <int> emptyRoad2;
+	for (int i = 0; i < ti.input.size(); i++)
+	{
+		decode_s(address_ofTopNode, emptyRoad2, ti.input[i]);
+	}
+	 
 
 }
-void HuffmanCode_makeTreeModel2(vector<std::string> code_source, vector<int> frequency_of_signs, int size2, vector<std::string> arrayofCode)
+void HuffmanCode_makeTreeModel2(vector<std::string> code_source, vector<int> frequency_of_signs, int size2, vector<std::string> arrayofCode, TreeInput ti)
 {
 	//struct MinHNode* root = buildHfTree(item, freq, size);
 
@@ -574,6 +625,18 @@ void HuffmanCode_makeTreeModel2(vector<std::string> code_source, vector<int> fre
 		decode_2(address_ofTopNode, emptyRoad, arrayofCode[i]);
 	}
 
+	std::ofstream myfile_temp;
+	myfile_temp.open("coded_withColons.txt");
+	myfile_temp.close();
+	std::ofstream myfile_temp2;
+	myfile_temp2.open("coded.txt");
+	myfile_temp2.close();
+
+	vector <int> emptyRoad2;
+	for (int i = 0; i < ti.input.size(); i++)
+	{
+		decode_2s(address_ofTopNode, emptyRoad2, ti.input[i]);
+	}
 }
 
 void histogram_toCsv(vector<int> a, vector<int> f)
@@ -772,13 +835,9 @@ int main()
 
 	/*vector<int> arrayOfData = { 'B','C','A','D','D','C','C','A','C','A','C','A','C'};*/
 
-	for (int i = 0; i < sizeof(treeInput.input); i++)
-	{
-		cout << treeInput.input[i] << " ";
-		//myfile << ti.input[i] << " ";
-	}
 
-	HuffmanCode_makeTree(array, frequency, size1, array, treeInput.input);
+
+	HuffmanCode_makeTree(array, frequency, size1, array, treeInput);
 
 	/*HuffmanCode_makeTree(array, frequency, size1, array);*/
 	
