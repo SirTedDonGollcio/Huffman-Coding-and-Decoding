@@ -39,18 +39,18 @@ BlockModel SymbolDataModel::BlockModel2(vector<int> array, vector<int> frequency
 	int whileStep = 0;
 	while (whileStep < size(array))
 	{		
-		char firstSymbol = array[whileStep];
+		int firstSymbol = array[whileStep];
 		for (int i = 0; i < size(array); i++)
 		{
-			char secondSymbol = array[i];
+			int secondSymbol = array[i];
 			std::string symbolString;
 			if (firstSymbol == 0)
 			{
-				symbolString = "0" + std::string(1, secondSymbol);
+				symbolString = "0" + std::to_string(secondSymbol);
 			}
 			else
 			{
-				symbolString = std::string(1, firstSymbol) + std::string(1, secondSymbol);
+				symbolString = std::to_string(firstSymbol) + std::to_string(secondSymbol);
 			}
 			int symbolFrequency = frequency[whileStep] * frequency[i];
 			BlockModel2Array.push_back(symbolString);
