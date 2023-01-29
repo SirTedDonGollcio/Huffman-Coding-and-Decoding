@@ -4,10 +4,7 @@
 #include <vector>
 #include <fstream>
 #include <chrono>
-	using namespace std;
-
-//#define MAX_TREE_HT 50
-
+using namespace std;
 
 class Node {
 public:
@@ -236,9 +233,6 @@ float average_bit_length_output_code(vector<int> f, vector<string> output)
 
 void HuffmanCode_makeTree(vector<int> code_source, vector<int> frequency_of_signs, int size, vector<int> arrayofCode, TreeInput ti, string name)
 {
-	//struct MinHNode* root = buildHfTree(item, freq, size);
-
-	//Node *left_node, *right_node, *top_node;
 	Tree tree_inProcess;
 
 	char tempC;
@@ -260,10 +254,6 @@ void HuffmanCode_makeTree(vector<int> code_source, vector<int> frequency_of_sign
 	}
 	Node initial_node;
 	tree_inProcess.nodes.push_back(initial_node);
-	/*for (int i = 0; i < size; i++)
-	{
-		cout << frequency_of_signs[i] << code_source[i] << " ";
-	}*/
 
 	Node* address_ofTopNode = new Node;
 
@@ -355,7 +345,6 @@ void HuffmanCode_makeTree(vector<int> code_source, vector<int> frequency_of_sign
 
 		while (freqs.size() > 0)
 		{
-			//cout << freqs.size();
 			Node* tempNode = new Node;
 
 			Node* tempNode_new = new Node;
@@ -427,9 +416,6 @@ void HuffmanCode_makeTree(vector<int> code_source, vector<int> frequency_of_sign
 
 void HuffmanCode_makeTreeModel2(vector<std::string> code_source, vector<int> frequency_of_signs, int size2, vector<std::string> arrayofCode, TreeInput ti, string name)
 {
-	//struct MinHNode* root = buildHfTree(item, freq, size);
-
-	//Node *left_node, *right_node, *top_node;
 	Tree_2 tree_inProcess;
 
 	std::string tempC;
@@ -451,10 +437,6 @@ void HuffmanCode_makeTreeModel2(vector<std::string> code_source, vector<int> fre
 	}
 	Node_2 initial_node;
 	tree_inProcess.nodes.push_back(initial_node);
-	/*for (int i = 0; i < size; i++)
-	{
-		cout << frequency_of_signs[i] << code_source[i] << " ";
-	}*/
 
 	Node_2* address_ofTopNode = new Node_2;
 
@@ -546,7 +528,6 @@ void HuffmanCode_makeTreeModel2(vector<std::string> code_source, vector<int> fre
 
 		while (freqs.size() > 0)
 		{
-			//cout << freqs.size();
 			Node_2* tempNode = new Node_2;
 
 			Node_2* tempNode_new = new Node_2;
@@ -585,8 +566,6 @@ void HuffmanCode_makeTreeModel2(vector<std::string> code_source, vector<int> fre
 
 			freqs.pop_back();
 		}
-
-		//cout << endl;
 	}
 
 	vector <int> emptyRoad2;
@@ -797,6 +776,5 @@ int main()
 		HuffmanCode_makeTree(array, frequency, sizeof(array), array, treeInput, name);
 		cout << "Model blokowy rzedu 2" << endl;
 		HuffmanCode_makeTreeModel2(blockModel2Array, BlockModel2Frequency, size2, blockModel2Array, treeInput, name);
-		//HuffmanCode_makeTreeModel2(blockModel2Array, BlockModel2Frequency, size2, blockModel2Array);
 	}
 }
