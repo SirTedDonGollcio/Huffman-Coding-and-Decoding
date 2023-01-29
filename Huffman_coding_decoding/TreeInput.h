@@ -8,9 +8,9 @@ class TreeInput
 private:
 	map<int, int> symbolsFrequencies;
 public:
+	vector<int> input;
 	TreeInput(vector<int> symbols);
 	TreeInput() {};
-	vector<int>	extractUniqueSymbols();
+	vector<int> extractUniqueSymbols();
 	vector<int> extractFrequencies();
 };
-

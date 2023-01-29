@@ -1,12 +1,13 @@
 #include "TreeInput.h"
 #include <map>
+#include <iostream>
 using namespace std;
 
 TreeInput::TreeInput(vector<int> symbols)
 {
 	for (int i = 0; i < symbols.size(); i++) {
 		symbolsFrequencies[symbols[i]]++;
-
+		input.push_back(symbols[i]);
 	}
 }
 

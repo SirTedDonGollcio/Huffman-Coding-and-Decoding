@@ -2,8 +2,6 @@
 using namespace std;
 #include <vector>
 
-
-
 class DataGenerator
 {
 public: 
